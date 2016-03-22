@@ -7,42 +7,28 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Aluno_view">
+    tools:context="com.example.matheus.appandroid.AddDisciplinaAluno_view">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/Materias"
-                android:textSize="23sp"
-                android:gravity="center"
-                android:textStyle="bold"/>
-
             <ListView
                 android:id="@+id/LV_Disciplinas"
                 android:layout_width="match_parent"
-                android:layout_height="400sp"/>
-
-
-
+                android:layout_height="425dp">
+            </ListView>
         </LinearLayout>
-
     </ScrollView>
 
     <Button
-        android:id="@+id/BT_AddDisc"
+        android:id="@+id/BT_cancelar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Adicionar disciplina"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"/>
-
+        android:layout_alignParentEnd="true"
+        android:text="Cancelar"/>
 </RelativeLayout>

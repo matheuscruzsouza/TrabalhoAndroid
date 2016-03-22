@@ -28,7 +28,9 @@
             android:name=".Disciplina_view"
             android:label="Disciplina" />
         <activity android:name=".AddDisciplina_view" />
-        <activity android:name=".RemDisciplina_view"></activity>
+        <activity android:name=".RemDisciplina_view" />
+        <activity android:name=".AddDisciplinaAluno_view"
+            android:label="Adicionar Disciplina"></activity>
     </application>
 
 </manifest>
