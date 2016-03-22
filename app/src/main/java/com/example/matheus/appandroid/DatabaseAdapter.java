@@ -83,6 +83,8 @@ public class DatabaseAdapter {
         Cursor professor = database_reader.rawQuery("select _id, matricula from Professor_db where matricula == '" + matricula.toString() +"';", null);
 
         if ((disciplina.getCount()>0) && (professor.getCount()>0)){
+            disciplina.moveToFirst();
+            professor.moveToFirst();
             ContentValues valores = new ContentValues();
             Log.e("Deb", disciplina.getInt(0)+" "+ professor.getInt(0));
             valores.put("cod_disciplina", disciplina.getInt(0));

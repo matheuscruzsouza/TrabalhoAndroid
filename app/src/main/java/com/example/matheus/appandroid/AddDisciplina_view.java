@@ -37,6 +37,9 @@ public class AddDisciplina_view extends AppCompatActivity {
                 BD.createDisciplina(ET_nome.getText().toString(), matricula);
                 ET_nome.setText("");
                 Intent tela = new Intent(AddDisciplina_view.this, Professor_view.class);
+                Bundle materia = new Bundle();
+                materia.putString("matricula", matricula);
+                tela.putExtras(materia);
                 startActivity(tela);
             }
         });
