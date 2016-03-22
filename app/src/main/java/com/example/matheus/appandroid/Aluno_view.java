@@ -58,6 +58,7 @@ public class Aluno_view extends AppCompatActivity {
                 materia.putString("matricula", matricula);
                 tela.putExtras(materia);
                 startActivity(tela);
+                finish();
             }
         });
 

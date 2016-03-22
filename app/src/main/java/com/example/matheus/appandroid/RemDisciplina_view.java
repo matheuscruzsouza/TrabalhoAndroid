@@ -39,6 +39,7 @@ public class RemDisciplina_view extends AppCompatActivity {
                 BD.removerDisciplina(disciplinas.get(position), matricula);
                 Intent tela = new Intent(RemDisciplina_view.this, Professor_view.class);
                 startActivityForResult(tela, 0);
+                finish();
             }
         });
     }

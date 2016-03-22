@@ -37,6 +37,7 @@ public class Login_view extends AppCompatActivity {
                     materia.putString("matricula", ET_Matricula.getText().toString());
                     tela.putExtras(materia);
                     startActivity(tela);
+                    finish();
                 }
                 else{
                     if(ET_Senha.getText().toString().equals("professor")) {
@@ -45,6 +46,7 @@ public class Login_view extends AppCompatActivity {
                         materia.putString("matricula", ET_Matricula.getText().toString());
                         tela.putExtras(materia);
                         startActivity(tela);
+                        finish();
                     }
                     else{
                         texto = "A matrícula ou senha está incorreta!";
