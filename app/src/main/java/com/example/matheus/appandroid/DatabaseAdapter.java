@@ -84,8 +84,9 @@ public class DatabaseAdapter {
 
         if ((disciplina.getCount()>0) && (professor.getCount()>0)){
             ContentValues valores = new ContentValues();
-            valores.put("cod_disciplina", disciplina.getString(0));
-            valores.put("cod_professor", professor.getString(0));
+            Log.e("Deb", disciplina.getInt(0)+" "+ professor.getInt(0));
+            valores.put("cod_disciplina", disciplina.getInt(0));
+            valores.put("cod_professor", professor.getInt(0));
             database_writer.insert("Professor_Disciplina_db", null, valores);
         }
 

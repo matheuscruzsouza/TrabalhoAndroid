@@ -13,7 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "AppAndroid.db";
     public static final String TABLE_NAME = "Aluno_db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 1;
     public static final String ID = "_id";
     public static final String NOME = "nome";
     public static final String SOBRENOME = "sobrenome";
