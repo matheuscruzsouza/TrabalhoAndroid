@@ -120,7 +120,12 @@ public class DatabaseAdapter {
     public List BuscarDisciplinasAluno(String matricula){
         List<String> disciplinas = new ArrayList<>();
 
+<<<<<<< HEAD
         Cursor disciplina = database_reader.rawQuery("select D.descricao from Aluno_db A inner join Aluno_Disciplina_db AD Left Join Disciplina_db D where A.matricula == '"+matricula+"'and A._id == AD.cod_aluno and D._id == AD.cod_disciplina;", null);
+=======
+
+        Cursor disciplina = database_reader.rawQuery("select D.descricao from Aluno_db A inner join Aluno_Disciplina_db AD Left Join Disciplina_db D where A._id == AD.cod_aluno and D._id == AD.cod_disciplina;", null);
+>>>>>>> 75ec96e5f099b211e81f6debc94b41e428e7dc05
 
         if (disciplina.getCount()>0) {
             disciplina.moveToFirst();
