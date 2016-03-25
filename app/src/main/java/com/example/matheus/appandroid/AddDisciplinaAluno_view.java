@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
-public class RemDisciplina_view extends AppCompatActivity {
+public class AddDisciplinaAluno_view extends AppCompatActivity {
 
     private String matricula;
     private ListView LV_Disciplinas;
@@ -19,7 +19,7 @@ public class RemDisciplina_view extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rem_disciplina);
+        setContentView(R.layout.activity_add_disciplina_aluno);
 
         Bundle args = getIntent().getExtras();
         matricula = args.getString("matricula");
@@ -36,9 +36,12 @@ public class RemDisciplina_view extends AppCompatActivity {
         LV_Disciplinas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                BD.removerDisciplina(disciplinas.get(position), matricula);
-                Intent tela = new Intent(RemDisciplina_view.this, Professor_view.class);
-                startActivityForResult(tela, 0);
+                BD.adicionarDisciplina(matricula, disciplinas.get(position));
+                Intent tela = new Intent(AddDisciplinaAluno_view.this, Aluno_view.class);
+                Bundle materia = new Bundle();
+                materia.putString("matricula", matricula);
+                tela.putExtras(materia);
+                startActivity(tela);
                 finish();
             }
         });

@@ -41,6 +41,7 @@ public class AddDisciplina_view extends AppCompatActivity {
                 materia.putString("matricula", matricula);
                 tela.putExtras(materia);
                 startActivity(tela);
+                finish();
             }
         });
     }

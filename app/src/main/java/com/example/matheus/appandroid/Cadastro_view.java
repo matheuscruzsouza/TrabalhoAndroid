@@ -68,6 +68,7 @@ public class Cadastro_view extends AppCompatActivity {
                                     ET_conf_senha.setText("");
                                     Intent tela = new Intent(Cadastro_view.this, Login_view.class);
                                     startActivity(tela);
+                                    finish();
                                 }
                             }
                         }

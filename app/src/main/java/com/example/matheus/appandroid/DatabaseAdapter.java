@@ -41,8 +41,6 @@ public class DatabaseAdapter {
                 null);
     }
 
-
-
     public static Cursor getAlunoMatricula(String matricula){
         Cursor cursor = database_reader.rawQuery("select nome,matricula,senha from " + DatabaseHelper.TABLE_NAME + " where matricula == '" + matricula + "';", null);
 
@@ -100,7 +98,7 @@ public class DatabaseAdapter {
         Cursor disciplina = database_reader.rawQuery("select _id, descricao from Disciplina_db where descricao == '" + descricao.toString() +"';", null);
         Cursor professor = database_reader.rawQuery("select _id, matricula from Professor_db where matricula == '" + matricula.toString() +"';", null);
         if ((disciplina.getCount()>0) && (professor.getCount()>0)){
-            database_writer.delete("Professor_Disciplina_db", "cod_disciplina == '" +disciplina.getString(0) + "' and cod_professor == '"+professor.getString(0)+"';", null);
+            database_writer.delete("Professor_Disciplina_db", "cod_disciplina == '" + disciplina.getString(0) + "' and cod_professor == '" + professor.getString(0) + "';", null);
         }
     }
 
@@ -117,6 +115,40 @@ public class DatabaseAdapter {
         }
 
         return disciplinas;
+    }
+
+    public List BuscarDisciplinasAluno(String matricula){
+        List<String> disciplinas = new ArrayList<>();
+
+        Cursor disciplina = database_reader.rawQuery("select D.descricao from Aluno_db A inner join Aluno_Disciplina_db AD Left Join Disciplina_db D where A.matricula == '"+matricula+"'and A._id == AD.cod_aluno and D._id == AD.cod_disciplina;", null);
+
+        if (disciplina.getCount()>0) {
+            disciplina.moveToFirst();
+
+            do {
+                disciplinas.add(disciplina.getString(0));
+            }while(disciplina.moveToNext());
+        }
+
+        return disciplinas;
+    }
+
+    public void adicionarDisciplina(String matricula, String descricao){
+        Cursor aluno = database_reader.rawQuery("Select _id from Aluno_db where matricula == '"+matricula+"';", null);
+        Cursor disciplina = database_reader.rawQuery("Select _id from Disciplina_db where descricao == '"+descricao+"';", null);
+
+        if ((aluno.getCount()>0) && (disciplina.getCount()>0)){
+            aluno.moveToFirst();
+            disciplina.moveToFirst();
+
+            ContentValues valores = new ContentValues();
+            valores.put("cod_aluno", aluno.getInt(0));
+            valores.put("cod_disciplina", disciplina.getInt(0));
+
+            database_writer.insert("Aluno_Disciplina_db", null, valores);
+
+        }
+
     }
 
 
