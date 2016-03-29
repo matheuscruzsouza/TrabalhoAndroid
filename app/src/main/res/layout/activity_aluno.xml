@@ -41,7 +41,7 @@
         android:id="@+id/BT_AddDisc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Adicionar disciplina"
+        android:text="@string/BT_addDisciplina"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"/>
 

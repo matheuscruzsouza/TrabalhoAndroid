@@ -36,7 +36,7 @@ public class RemDisciplina_view extends AppCompatActivity {
         LV_Disciplinas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                BD.removerDisciplina(disciplinas.get(position), matricula);
+                BD.removerDisciplinaProfessor(matricula, disciplinas.get(position));
                 Intent tela = new Intent(RemDisciplina_view.this, Professor_view.class);
                 startActivityForResult(tela, 0);
                 finish();

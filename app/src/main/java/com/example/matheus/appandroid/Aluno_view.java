@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Aluno_view extends AppCompatActivity {
 
-    private String matricula;
+    private String matricula, nome;
     private ListView LV_Disciplinas;
     private DatabaseAdapter BD;
     private Button BT_AddDisc;
@@ -31,6 +31,12 @@ public class Aluno_view extends AppCompatActivity {
         BD = new DatabaseAdapter(this);
 
         final List<String> disciplinas = BD.BuscarDisciplinasAluno(matricula) ;
+
+        nome = BD.buscarNomeAluno(matricula);
+        if (nome != "none"){
+            setTitle("Olá, "+nome);
+        }
+
 
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, disciplinas);

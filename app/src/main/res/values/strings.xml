@@ -1,5 +1,5 @@
 <resources>
-    #textos genericos/nomes de telas
+    #Textos genericos/nomes de telas
     <string name="app_name">AppAndroid</string>
     <string name="Login">Login</string>
     <string name="Professor">Professor</string>
@@ -8,21 +8,27 @@
     <string name="Materias">Materias</string>
 
 
-    #detalhes de login
+    #Detalhes de login
     <string name="Matricula">Matricula</string>
     <string name="Senha">Senha</string>
     <string name="Conf_Senha">Confirme a senha</string>
 
-    #detalhes de perfil
+    #Detalhes de perfil
     <string name="Nome">Nome</string>
     <string name="Sobrenome">Sobrenome</string>
 
+    #Detalhes Inserir disciplina
+    <string name="addDisciplina">Nome da disciplina</string>
+
     #Texto botoes
-    <string name="BT_prox">Prox.</string>
+    <string name="BT_prox">Login</string>
     <string name="BT_cadastrar">Cadastrar</string>
     <string name="BT_save">Salvar</string>
+    <string name="BT_cancelar">Cancelar</string>
     <string name="BT_selecionar">Selecionar</string>
+    <string name="BT_addDisciplina">Adicionar disciplina</string>
 
     #Textos de aviso
     <string name="info_prof">Obs.: Professores são cadastrados apenas no site.\n</string>
+
 </resources>

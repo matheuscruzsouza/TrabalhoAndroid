@@ -20,7 +20,6 @@ import java.util.List;
 
 public class Disciplina_view extends AppCompatActivity {
 
-    private TextView materia_nome;
     private ListView Lista_aulas;
 
     @Override
@@ -31,12 +30,11 @@ public class Disciplina_view extends AppCompatActivity {
         Bundle args = getIntent().getExtras();
         String materia = args.getString("materia_nome");
 
-        materia_nome = (TextView) findViewById(R.id.materia_nome);
-        materia_nome.setText("Disciplina de " + (materia).toLowerCase());
+        setTitle("Disciplina de " + (materia).toLowerCase());
 
         Lista_aulas = (ListView) findViewById(R.id.LV_aulas_disc);
 
-        final String[] disciplinas = {"Aula dia XX/XX/2016", "Aula dia XX/XX/2016"};
+        final String[] disciplinas = {"Aula dia XX/XX/2016"};
 
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, disciplinas);
@@ -45,11 +43,11 @@ public class Disciplina_view extends AppCompatActivity {
         Lista_aulas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Intent tela = new Intent(Disciplina_view.this, _view.class);
-                //Bundle materia = new Bundle();
-                //materia.putString("materia_nome", disciplinas.get(position));
-                //tela.putExtras(materia);
-                //startActivity(tela);
+                Intent tela = new Intent(Disciplina_view.this, Aula_view.class);
+                Bundle materia = new Bundle();
+                materia.putString("aula_nome", disciplinas[position]);
+                tela.putExtras(materia);
+                startActivity(tela);
             }
         });
 

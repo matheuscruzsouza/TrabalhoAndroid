@@ -12,22 +12,39 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "AppAndroid.db";
-    public static final String TABLE_NAME = "Aluno_db";
-    private static final int DATABASE_VERSION = 1;
+    public static final String TABLE_ALUNO = "Aluno_db";
+    public static final String TABLE_PROFESSOR = "Professor_db";
+    public static final String TABLE_DISCIPLINA = "Disciplina_db";
+    public static final String TABLE_AULA = "Aula_db";
+    public static final String TABLE_ALUNO_DISCIPLINA = "Aluno_Disciplina_db";
+    public static final String TABLE_PROFESSOR_DISCIPLINA = "Pofessor_Disciplina_db";
+
+    private static final int DATABASE_VERSION = 2;
+
     public static final String ID = "_id";
     public static final String NOME = "nome";
     public static final String SOBRENOME = "sobrenome";
     public static final String MATRICULA = "matricula";
     public static final String SENHA = "senha";
-    private static final String DATABASE_ALUNO_CREATE = "create table "+ TABLE_NAME + "( "+ID+" integer primary key autoincrement, " +
-            "nome text not null, sobrenome text not null, matricula text not null" +", senha text not null);";
-    private static final String DATABASE_DISCIPLINA_CREATE = "create table Disciplina_db( "+ID+" integer primary key autoincrement, " +
-            "descricao text not null);";
-    private static final String DATABASE_PROFESSOR_CREATE = "create table Professor_db( "+ID+" integer primary key autoincrement, " +
-            "nome text not null, sobrenome text not null, matricula text not null" +", senha text not null);";
-    private static final String DATABASE_ALUNO_DISCIPLINA_CREATE = "create table Aluno_Disciplina_db( "+ID+" integer primary key autoincrement, " +
+    public static final String DESCRICAO = "descricao";
+
+
+    private static final String TABLE_ALUNO_CREATE = "create table "+ TABLE_ALUNO + "( "+ID+" integer primary key autoincrement, " +
+            NOME + " varchar(40) not null, "+SOBRENOME+" varchar(40) not null, "+MATRICULA+" varchar(20) not null" +", "+SENHA+" varchar(20) not null);";
+
+    private static final String TABLE_DISCIPLINA_CREATE = "create table " +TABLE_DISCIPLINA+ "( "+ID+" integer primary key autoincrement, " +
+            DESCRICAO + " varchar(40) not null);";
+
+    private static final String TABLE_AULA_CREATE = "create table " +TABLE_AULA+ "( "+ID+" integer primary key autoincrement, " +
+            "cod_disciplina int not null, "+DESCRICAO + " varchar(40) not null, data varchar(20) not null);";
+
+    private static final String TABLE_PROFESSOR_CREATE = "create table " + TABLE_PROFESSOR + "( "+ID+" integer primary key autoincrement, " +
+            NOME + " varchar(40) not null, "+SOBRENOME+" varchar(40) not null, "+MATRICULA+" varchar(20) not null" +", "+SENHA+" varchar(20) not null);";
+
+    private static final String TABLE_ALUNO_DISCIPLINA_CREATE = "create table " +TABLE_ALUNO_DISCIPLINA+ "( "+ID+" integer primary key autoincrement, " +
             "cod_aluno integer not null, cod_disciplina integer not null);";
-    private static final String DATABASE_PROFESSOR_DISCIPLINA_CREATE = "create table Professor_Disciplina_db( "+ID+" integer primary key autoincrement, " +
+
+    private static final String TABLE_PROFESSOR_DISCIPLINA_CREATE = "create table "+TABLE_PROFESSOR_DISCIPLINA+"( "+ID+" integer primary key autoincrement, " +
             "cod_professor integer not null, cod_disciplina integer not null);";
 
     public DatabaseHelper(Context context) {
@@ -36,13 +53,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DATABASE_ALUNO_CREATE);
-        db.execSQL(DATABASE_DISCIPLINA_CREATE);
-        db.execSQL(DATABASE_PROFESSOR_CREATE);
-        db.execSQL(DATABASE_ALUNO_DISCIPLINA_CREATE);
-        db.execSQL(DATABASE_PROFESSOR_DISCIPLINA_CREATE);
+        db.execSQL(TABLE_ALUNO_CREATE);
+        db.execSQL(TABLE_DISCIPLINA_CREATE);
+        db.execSQL(TABLE_AULA_CREATE);
+        db.execSQL(TABLE_PROFESSOR_CREATE);
+        db.execSQL(TABLE_ALUNO_DISCIPLINA_CREATE);
+        db.execSQL(TABLE_PROFESSOR_DISCIPLINA_CREATE);
         db.execSQL("Insert into Professor_db(nome, sobrenome, matricula, senha) values('Jorge', 'Ribeiro', '0405', '12345');");
         db.execSQL("Insert into Disciplina_db(descricao) values('Prog. OO Aplicada');");
+        db.execSQL("Insert into Professor_Disciplina_db(cod_professor, cod_disciplina) values (0405, 1);");
     }
 
     @Override
@@ -50,7 +69,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.w(DatabaseHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ALUNO);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DISCIPLINA);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFESSOR);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_AULA);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ALUNO_DISCIPLINA);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFESSOR_DISCIPLINA);
         onCreate(db);
 
     }
