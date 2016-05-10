@@ -20,7 +20,11 @@ import java.util.List;
 
 public class AddDisciplinaAluno_view extends AppCompatActivity {
 
+<<<<<<< HEAD
     private String matricula, durl = "https://frozen-sea-51497.herokuapp.com";
+=======
+    private String matricula, durl = "https://frozen-sea-51497.herokuapp.com/disciplinas.json";
+>>>>>>> ecb04366956e10b66bc580cbe78faf9fc8f585ac
     private ListView LV_Disciplinas;
     private JSONArray retorno;
     private ArrayList<String> ListaDisciplinas;
@@ -42,7 +46,11 @@ public class AddDisciplinaAluno_view extends AppCompatActivity {
 
         ListaDisciplinas = new ArrayList<>();
 
+<<<<<<< HEAD
         AlunoTask bgtGets = new AlunoTask(durl+"/disciplinas.json", RestFullHelper.GET, null);
+=======
+        AlunoTask bgtGets = new AlunoTask(durl, RestFullHelper.GET, null);
+>>>>>>> ecb04366956e10b66bc580cbe78faf9fc8f585ac
         bgtGets.execute();
 
         Lista = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ListaDisciplinas);
@@ -52,16 +60,27 @@ public class AddDisciplinaAluno_view extends AppCompatActivity {
         LV_Disciplinas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+<<<<<<< HEAD
 
                 JSONObject param = getParams(retorno.optJSONObject(position));
 
                 AlunoTask bgtpost = new AlunoTask(durl+"/aluno_disciplinas.json", RestFullHelper.POST, param);
                 bgtpost.execute();
 
+=======
+                //BD.adicionarDisciplina(matricula, ListaDisciplinas.get(position));
+                Intent tela = new Intent(AddDisciplinaAluno_view.this, Aluno_view.class);
+                Bundle materia = new Bundle();
+                materia.putString("aluno", matricula);
+                tela.putExtras(materia);
+                startActivity(tela);
+                finish();
+>>>>>>> ecb04366956e10b66bc580cbe78faf9fc8f585ac
             }
         });
     }
 
+<<<<<<< HEAD
     public JSONObject getParams(JSONObject disciplina){
         JSONObject params = new JSONObject();
         try {
@@ -74,6 +93,8 @@ public class AddDisciplinaAluno_view extends AppCompatActivity {
         return params;
     }
 
+=======
+>>>>>>> ecb04366956e10b66bc580cbe78faf9fc8f585ac
     public class AlunoTask extends AsyncTask<String, String, JSONArray> {
 
         String url = null;
@@ -94,6 +115,7 @@ public class AddDisciplinaAluno_view extends AppCompatActivity {
         protected JSONArray doInBackground(String... params) {
             RestFullHelper http = new RestFullHelper();
 
+<<<<<<< HEAD
             if (method == "GET") {
                 if (retorno == null) {
                     try {
@@ -110,6 +132,14 @@ public class AddDisciplinaAluno_view extends AppCompatActivity {
                 }
             }
 
+=======
+
+            try {
+                retorno = http.getJSONList(url, method, parametros);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+>>>>>>> ecb04366956e10b66bc580cbe78faf9fc8f585ac
             return retorno;
         }
 
@@ -125,6 +155,7 @@ public class AddDisciplinaAluno_view extends AppCompatActivity {
 
             int i;
 
+<<<<<<< HEAD
             if (method == "GET") {
                 for (i = 0; i < retorno.length(); i++) {
                     try {
@@ -144,6 +175,15 @@ public class AddDisciplinaAluno_view extends AppCompatActivity {
                     tela.putExtras(materia);
                     startActivity(tela);
                     finish();
+=======
+            for (i = 0; i<retorno.length(); i++){
+                try {
+                    JSONObject obj = retorno.getJSONObject(i);
+                    String nome = obj.getString("descricao");
+                    ListaDisciplinas.add(nome);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+>>>>>>> ecb04366956e10b66bc580cbe78faf9fc8f585ac
                 }
             }
 
