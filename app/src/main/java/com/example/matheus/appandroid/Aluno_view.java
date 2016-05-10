@@ -9,14 +9,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class Aluno_view extends AppCompatActivity {
 
-    private String matricula, nome;
+    private String matricula, nome, sobrenome;
     private ListView LV_Disciplinas;
     private DatabaseAdapter BD;
     private Button BT_AddDisc;
+    private JSONObject pessoa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +28,12 @@ public class Aluno_view extends AppCompatActivity {
         setContentView(R.layout.activity_aluno);
 
         Bundle args = getIntent().getExtras();
-        matricula = args.getString("matricula");
+        matricula = args.getString("aluno");
+        try {
+            pessoa = new JSONObject(matricula);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Aplica a setinha no actionBar
 
@@ -32,9 +41,14 @@ public class Aluno_view extends AppCompatActivity {
 
         final List<String> disciplinas = BD.BuscarDisciplinasAluno(matricula) ;
 
-        nome = BD.buscarNomeAluno(matricula);
-        if (nome != "none"){
-            setTitle("Olá, "+nome);
+        try {
+            nome = pessoa.getString("nome");
+            sobrenome = pessoa.getString("sobrenome");
+            if (nome != "none"){
+                setTitle("Olá, "+nome+" "+sobrenome);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
 
@@ -61,10 +75,9 @@ public class Aluno_view extends AppCompatActivity {
             public void onClick(View v) {
                 Intent tela = new Intent(Aluno_view.this, AddDisciplinaAluno_view.class);
                 Bundle materia = new Bundle();
-                materia.putString("matricula", matricula);
+                materia.putString("pessoa", matricula);
                 tela.putExtras(materia);
                 startActivity(tela);
-                finish();
             }
         });
 

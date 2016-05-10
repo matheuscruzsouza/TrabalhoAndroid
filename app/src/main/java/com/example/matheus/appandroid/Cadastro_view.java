@@ -1,6 +1,8 @@
 package com.example.matheus.appandroid;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,20 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Cadastro_view extends AppCompatActivity {
 
     private Button BT_save;
     private EditText ET_nome, ET_sobrenome, ET_matricula, ET_senha, ET_conf_senha;
     private TextView TX_Alerta;
     private String texto;
-    private DatabaseAdapter BD;
+    private String durl = "http://frozen-sea-51497.herokuapp.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar);
-
-        BD = new DatabaseAdapter(this);
 
         BT_save = (Button) findViewById(R.id.BT_save);
 
@@ -60,15 +63,11 @@ public class Cadastro_view extends AppCompatActivity {
                                     texto = "O campo confirmar senha esta vazio";
                                     TX_Alerta.setText(texto);
                                 } else {
-                                    BD.createAluno(ET_nome.getText().toString(), ET_sobrenome.getText().toString(), ET_matricula.getText().toString(), ET_senha.getText().toString());
-                                    ET_nome.setText("");
-                                    ET_sobrenome.setText("");
-                                    ET_matricula.setText("");
-                                    ET_senha.setText("");
-                                    ET_conf_senha.setText("");
-                                    Intent tela = new Intent(Cadastro_view.this, Login_view.class);
-                                    startActivity(tela);
-                                    finish();
+
+                                    JSONObject params = getParams();
+
+                                    AlunoTask salvar = new AlunoTask(durl+"/alunos.json", RestFullHelper.POST, params);
+                                    salvar.execute();
                                 }
                             }
                         }
@@ -80,5 +79,60 @@ public class Cadastro_view extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private JSONObject getParams() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("matricula", ET_matricula.getText().toString());
+            params.put("nome", ET_nome.getText().toString());
+            params.put("sobrenome", ET_sobrenome.getText().toString());
+            params.put("senha", ET_senha.getText().toString());
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return params;
+    }
+
+
+    public class AlunoTask extends AsyncTask<String, String, JSONObject> {
+
+        String url = null;
+        String method = null;
+        JSONObject parametros = null;
+
+        ProgressDialog dialog;
+
+        public AlunoTask(String url, String method, JSONObject parametros) {
+            this.url = url;
+            this.method = method;
+            this.parametros = parametros;
+
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            RestFullHelper http = new RestFullHelper();
+
+            return http.getJSON(url, method, parametros);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(Cadastro_view.this);
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject aluno) {
+
+            dialog.dismiss();
+
+            Intent tela = new Intent(Cadastro_view.this, Login_view.class);
+            startActivity(tela);
+            finish();
+        }
     }
 }
