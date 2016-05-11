@@ -28,11 +28,8 @@ public class Login_view extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-<<<<<<< HEAD
         retorno = null;
 
-=======
->>>>>>> ecb04366956e10b66bc580cbe78faf9fc8f585ac
         BT_PTela = (Button) findViewById(R.id.BT_PTela);
         BT_cadastrar = (Button) findViewById(R.id.BT_Cadastrar);
         ET_Matricula = (EditText) findViewById(R.id.ET_matricula);
@@ -75,25 +72,19 @@ public class Login_view extends AppCompatActivity {
         protected JSONArray doInBackground(String... params) {
             RestFullHelper http = new RestFullHelper();
 
-<<<<<<< HEAD
             if (retorno == null) {
                 try {
                     retorno = http.getJSON(url, method, parametros).getJSONArray("aluno");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-=======
-            try {
-                retorno = http.getJSONList(url, method, parametros);
-            } catch (JSONException e) {
-                e.printStackTrace();
->>>>>>> ecb04366956e10b66bc580cbe78faf9fc8f585ac
             }
             return retorno;
+
         }
 
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute(){
             dialog = new ProgressDialog(Login_view.this);
             dialog.setTitle("Carregando");
             dialog.show();
