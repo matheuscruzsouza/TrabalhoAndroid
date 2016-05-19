@@ -1,7 +1,6 @@
 package com.example.matheus.appandroid;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,66 +13,69 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.SQLClientInfoException;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
-public class AddDisciplina_view extends AppCompatActivity {
+public class Add_aula extends AppCompatActivity {
 
-    private String matricula, durl = "https://frozen-sea-51497.herokuapp.com";
-    private EditText ET_nome;
-    private Button BT_Salvar, BT_cancelar;
-    private JSONObject pessoa;
+    private JSONObject disciplina;
+    private EditText data, descricao;
+    private Button salvar, cancelar;
+    private String durl = "https://frozen-sea-51497.herokuapp.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_disciplina);
+        setContentView(R.layout.activity_add_aula);
 
         Bundle args = getIntent().getExtras();
-        matricula = args.getString("matricula");
-
+        String materia = args.getString("materia");
         try {
-            pessoa = new JSONObject(matricula);
-
+            disciplina = new JSONObject(materia);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        BT_Salvar = (Button) findViewById(R.id.BT_Salvar);
-        BT_cancelar = (Button) findViewById(R.id.BT_Cancelar);
+        data = (EditText) findViewById(R.id.ET_data);
+        descricao = (EditText) findViewById(R.id.ET_descricao);
 
-        ET_nome = (EditText) findViewById(R.id.ET_nome);
+        salvar = (Button) findViewById(R.id.BT_Salvar);
+        cancelar = (Button) findViewById(R.id.BT_Cancelar);
 
-        BT_Salvar.setOnClickListener(new View.OnClickListener() {
+        data.setText(getDateTime());
+
+        salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                JSONObject params = new JSONObject();
-                try {
-                    params.put("professor_id", pessoa.getString("id"));
-                    params.put("descricao", ET_nome.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                AndroidTask salvar = new AndroidTask(durl+"/disciplinas.json", RestFullHelper.POST, params);
+                AndroidTask salvar = new AndroidTask(durl+"/aulas.json", RestFullHelper.POST, getParams());
                 salvar.execute();
-
-                Intent tela = new Intent(AddDisciplina_view.this, Professor_view.class);
-                Bundle materia = new Bundle();
-                materia.putString("professor", pessoa.toString());
-                tela.putExtras(materia);
-                startActivity(tela);
-                finish();
-
             }
         });
 
-        BT_cancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
+
+    }
+
+    private JSONObject getParams(){
+        JSONObject params = new JSONObject();
+        try {
+            params.put("data_abertura", data.getText().toString());
+            params.put("conteudo", descricao.getText().toString());
+            params.put("disciplina_id", disciplina.getString("id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return params;
+    }
+
+    private String getDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     public class AndroidTask extends AsyncTask<String, String, JSONArray> {
@@ -105,7 +107,7 @@ public class AddDisciplina_view extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            dialog = new ProgressDialog(AddDisciplina_view.this);
+            dialog = new ProgressDialog(Add_aula.this);
             dialog.setTitle("Carregando");
             //dialog.show();
         }

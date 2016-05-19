@@ -20,6 +20,10 @@
     #Detalhes Inserir disciplina
     <string name="addDisciplina">Nome da disciplina</string>
 
+    #Detalhes Inserir aula
+    <string name="addAula">Descrição da aula</string>
+    <string name="dataAula">Data da aula</string>
+
     #Texto botoes
     <string name="BT_prox">Login</string>
     <string name="BT_cadastrar">Cadastrar</string>
@@ -30,5 +34,11 @@
 
     #Textos de aviso
     <string name="info_prof">Obs.: Professores são cadastrados apenas no site.\n</string>
+
+    #Textos de menu
+    <string name="at_cadastro">Atualizar cadastro</string>
+
+    <string name="M_novaAula">Nova aula</string>
+    <string name="M_deleteAula">Apagar Aula</string>
 
 </resources>

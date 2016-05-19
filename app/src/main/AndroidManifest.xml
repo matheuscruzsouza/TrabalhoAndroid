@@ -43,7 +43,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".Aula_view"></activity>
+        <activity android:name=".Aula_view" />
+        <activity android:name=".Add_aula"></activity>
     </application>
 
 </manifest>

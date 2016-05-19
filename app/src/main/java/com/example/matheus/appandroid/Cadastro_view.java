@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +19,8 @@ public class Cadastro_view extends AppCompatActivity {
     private Button BT_save;
     private EditText ET_nome, ET_sobrenome, ET_matricula, ET_senha, ET_conf_senha;
     private TextView TX_Alerta;
-    private String texto;
+    private String texto, metodo, matricula;
+    private JSONObject pessoa;
     private String durl = "http://frozen-sea-51497.herokuapp.com";
 
     @Override
@@ -35,6 +37,23 @@ public class Cadastro_view extends AppCompatActivity {
         ET_conf_senha = (EditText) findViewById(R.id.ET_conf_senha);
 
         TX_Alerta = (TextView) findViewById(R.id.TX_Alerta);
+
+        Bundle args = getIntent().getExtras();
+        metodo = args.getString("tipo");
+        if ("PUT".equals(metodo)) {
+            matricula = args.getString("pessoa");
+            try {
+                pessoa = new JSONObject(matricula);
+                Log.e("Pessoa", pessoa.toString());
+                ET_nome.setText(pessoa.getString("nome"));
+                ET_sobrenome.setText(pessoa.getString("sobrenome"));
+                ET_matricula.setText(pessoa.getString("matricula"));
+                ET_senha.setText(pessoa.getString("senha"));
+                //ET_senha.setFocusable(false);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         BT_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,10 +83,25 @@ public class Cadastro_view extends AppCompatActivity {
                                     TX_Alerta.setText(texto);
                                 } else {
 
-                                    JSONObject params = getParams();
+                                    if ("POST".equals(metodo)) {
+                                        JSONObject params = getParams();
 
-                                    AlunoTask salvar = new AlunoTask(durl+"/alunos.json", RestFullHelper.POST, params);
-                                    salvar.execute();
+                                        AlunoTask salvar = new AlunoTask(durl + "/alunos.json", RestFullHelper.POST, params);
+                                        salvar.execute();
+                                    }
+                                    else{
+                                        if ("PUT".equals(metodo)) {
+                                            JSONObject params = getParams();
+
+                                            try {
+                                                AlunoTask salvar = new AlunoTask(pessoa.getString("url"), RestFullHelper.PUT, params);
+                                                salvar.execute();
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -129,10 +163,16 @@ public class Cadastro_view extends AppCompatActivity {
         protected void onPostExecute(JSONObject aluno) {
 
             dialog.dismiss();
-
-            Intent tela = new Intent(Cadastro_view.this, Login_view.class);
-            startActivity(tela);
-            finish();
+            if (method == "POST") {
+                Intent tela = new Intent(Cadastro_view.this, Login_view.class);
+                startActivity(tela);
+                finish();
+            }
+            else{
+                if (method == "PUT"){
+                    finish();
+                }
+            }
         }
     }
 }

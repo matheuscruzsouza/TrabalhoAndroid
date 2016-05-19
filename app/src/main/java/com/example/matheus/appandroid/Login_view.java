@@ -20,15 +20,16 @@ public class Login_view extends AppCompatActivity {
     private EditText ET_Matricula, ET_Senha;
     private TextView Alerta;
     private String texto;
-    String durl = "https://frozen-sea-51497.herokuapp.com/alunos.json";
-    JSONArray retorno;
+    String durl = "https://frozen-sea-51497.herokuapp.com";
+    JSONArray alunos, professores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        retorno = null;
+        alunos = null;
+        professores = null;
 
         BT_PTela = (Button) findViewById(R.id.BT_PTela);
         BT_cadastrar = (Button) findViewById(R.id.BT_Cadastrar);
@@ -48,7 +49,11 @@ public class Login_view extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent tela = new Intent(Login_view.this, Cadastro_view.class);
+                Bundle method = new Bundle();
+                method.putString("tipo", "POST");
+                tela.putExtras(method);
                 startActivity(tela);
+                finish();
             }
         });
     }
@@ -72,14 +77,15 @@ public class Login_view extends AppCompatActivity {
         protected JSONArray doInBackground(String... params) {
             RestFullHelper http = new RestFullHelper();
 
-            if (retorno == null) {
+            if ((alunos == null) && (professores == null)) {
                 try {
-                    retorno = http.getJSON(url, method, parametros).getJSONArray("aluno");
+                    alunos = http.getJSON(url+"/alunos.json", method, parametros).getJSONArray("aluno");
+                    professores = http.getJSON(url+"/professores.json", method, parametros).getJSONArray("professor");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            return retorno;
+            return null;
 
         }
 
@@ -91,41 +97,25 @@ public class Login_view extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(JSONArray aluno) {
+        protected void onPostExecute(JSONArray jsonArray) {
 
-            int i;
-            Boolean BAluno = false;
-            JSONObject pessoa = null;
-
-            for (i = 0; i < retorno.length(); i++) {
-                try {
-                    JSONObject obj = retorno.getJSONObject(i);
-                    if (ET_Matricula.getText().toString().equals(obj.getString("matricula"))){
-                        if (ET_Senha.getText().toString().equals(obj.getString("senha"))){
-                            BAluno = true;
-                            pessoa = obj;
-                            break;
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+            JSONObject aluno = Login(alunos);
 
             dialog.dismiss();
 
-            if (BAluno == true) {
+            if (aluno != null) {
                 Intent tela = new Intent(Login_view.this, Aluno_view.class);
                 Bundle materia = new Bundle();
-                materia.putString("aluno", pessoa.toString());
+                materia.putString("aluno", aluno.toString());
                 tela.putExtras(materia);
                 startActivity(tela);
                 finish();
             } else {
-                if (ET_Senha.getText().toString().equals("professor")) {
+                JSONObject professor = Login(professores);
+                if (professor != null) {
                     Intent tela = new Intent(Login_view.this, Professor_view.class);
                     Bundle materia = new Bundle();
-                    materia.putString("matricula", ET_Matricula.getText().toString());
+                    materia.putString("professor", professor.toString());
                     tela.putExtras(materia);
                     startActivity(tela);
                     finish();
@@ -135,6 +125,27 @@ public class Login_view extends AppCompatActivity {
                 }
             }
 
+        }
+
+        public JSONObject Login(JSONArray colection){
+            int i;
+            JSONObject pessoa = null;
+
+            for (i = 0; i < colection.length(); i++) {
+                try {
+                    JSONObject obj = colection.getJSONObject(i);
+                    if (ET_Matricula.getText().toString().equals(obj.getString("matricula"))){
+                        if (ET_Senha.getText().toString().equals(obj.getString("senha"))){
+                            pessoa = obj;
+                            break;
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return pessoa;
         }
     }
 

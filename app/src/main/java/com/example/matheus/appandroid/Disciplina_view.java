@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,6 +37,29 @@ public class Disciplina_view extends AppCompatActivity {
     private JSONArray retorno;
     private ArrayList<String> ListaAulas;
     private ArrayAdapter<String> itemsAdapter;
+    private String professor;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (professor != null) {
+            getMenuInflater().inflate(R.menu.aula_menu, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.M_novaAula:
+                Intent tela = new Intent(Disciplina_view.this, Add_aula.class);
+                Bundle method = new Bundle();
+                method.putString("materia", materia.toString());
+                tela.putExtras(method);
+                startActivity(tela);
+        }
+        return true;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +67,16 @@ public class Disciplina_view extends AppCompatActivity {
         setContentView(R.layout.activity_disciplina);
 
         ListaAulas = new ArrayList<>();
+        professor = null;
 
         Bundle args = getIntent().getExtras();
         String SMateria = args.getString("materia_nome");
+        try{
+            professor = args.getString("professor");
+        }
+        catch (Exception e){
 
+        }
         try {
             materia = new JSONObject(SMateria);
             id = materia.getString("id");

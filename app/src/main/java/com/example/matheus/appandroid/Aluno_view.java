@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,6 +31,26 @@ public class Aluno_view extends AppCompatActivity {
     private ArrayList<String> ListaDisciplinas;
     private ArrayList<JSONObject> disciplinas;
     private ArrayAdapter<String> Lista;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.M_atualizarCadastro:
+                Intent tela = new Intent(Aluno_view.this, Cadastro_view.class);
+                Bundle method = new Bundle();
+                method.putString("tipo", "PUT");
+                method.putString("pessoa", matricula);
+                tela.putExtras(method);
+                startActivity(tela);
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
